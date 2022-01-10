@@ -1,11 +1,9 @@
 <?php
 /*
-Plugin Name:	My Custom Functionality
-Plugin URI:		https://example.com
-Description:	My custom functions.
+Plugin Name:	Custom Functions
+Description:	Adding custom functionality to Oxygen-powered websites.
 Version:		1.0.0
-Author:			Your Name
-Author URI:		https://example.com
+Author:			James Calmus
 License:		GPL-2.0+
 License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -27,23 +25,17 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wp_enqueue_scripts', 'custom_enqueue_files' );
-/**
- * Loads <list assets here>.
- */
-function custom_enqueue_files() {
-	// if this is not the front page, abort.
-	// if ( ! is_front_page() ) {
-	// 	return;
-	// }
-
-	// loads a CSS file in the head.
-	// wp_enqueue_style( 'highlightjs-css', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' );
-
-	/**
-	 * loads JS files in the footer.
-	 */
-	// wp_enqueue_script( 'highlightjs', plugin_dir_url( __FILE__ ) . 'assets/js/highlight.pack.js', '', '9.9.0', true );
-
-	// wp_enqueue_script( 'highlightjs-init', plugin_dir_url( __FILE__ ) . 'assets/js/highlight-init.js', '', '1.0.0', true );
+function console_log($output, $with_script_tags = true) {
+    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
+');';
+    if ($with_script_tags) {
+        $js_code = '<script>' . $js_code . '</script>';
+    }
+    echo $js_code;
 }
+
+function customise_wpatt_html( $html ) { //Alter final html
+	console_log($html);
+    return $html;
+}
+add_filter( 'wpatt_list_html', 'customise_wpatt_html' );
